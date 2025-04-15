@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.urovo.serialportsdkdemo",
+  "variantName": "processRfidSdkVerReleaseResources",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "versionCode": 6,
+      "versionName": "1.0.6",
+      "outputFile": "Serialport_RfidSdkVer_vRfidSdkVer_v1.0.6_20230216151712_release.apk"
+    }
+  ]
+}

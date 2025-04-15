@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.urovo.serialport"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:name="com.uro.serialport.BaseApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.uro.serialport.view.activity.StartActivity"
+            android:screenOrientation="portrait">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name="com.uro.serialport.view.activity.RfidSdkDemoActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.uro.serialport.MainActivity"
+            android:screenOrientation="portrait"
+            >
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity android:name="com.uro.serialport.view.activity.SerialPortCommunicationActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/serial_port"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name="com.uro.serialport.DowloadPCActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name="com.uro.serialport.ImportActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+            android:name="com.uro.serialport.SerialPortSettingActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <receiver
+            android:name="com.uro.receiver.AppReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+                <action android:name="android.hardware.usb.action.USB_STATE"/>
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

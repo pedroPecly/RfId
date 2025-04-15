@@ -1,0 +1,11 @@
+<resources>
+    <!--<string name="app_name">串口测试</string>-->
+    <string name="serial_port">Serial port test</string>
+    <string name="initialize">Initialize</string>
+    <string name="read_battery_info">Read battery information</string>
+    <string name="release">Release</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="rfid_reader_model">Rfid Reader Model</string>
+    <string name="active_read_battery_info">Active Read battery information</string>
+
+</resources>

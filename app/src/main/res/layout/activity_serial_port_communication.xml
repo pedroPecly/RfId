@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/et_input_data"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_round"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:lines="1"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/btn_open_host"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_round"
+                android:text="打开 Host 模式"
+                android:layout_marginEnd="5dp"/>
+
+            <Button
+                android:id="@+id/btn_close_host"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_round"
+                android:text="关闭 Host 模式"
+                android:layout_marginStart="5dp"/>
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/btn_open_serial"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_round"
+            android:text="打开串口"
+            android:layout_marginEnd="5dp"/>
+
+        <Button
+            android:id="@+id/btn_close_serial"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_round"
+            android:text="关闭串口"
+            android:layout_marginStart="5dp"/>
+
+    </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_round"
+            android:text="发送数据"
+            android:layout_marginTop="10dp" />
+
+        <Button
+            android:id="@+id/btn_setting_sp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_round"
+            android:text="设置串口参数"
+            android:layout_marginTop="10dp"/>
+
+        <include layout="@layout/layout_output"/>
+
+    </LinearLayout>
+
+</layout>
