@@ -6,6 +6,27 @@
     <string name="release">Liberar</string>
     <string name="disconnect">Desconectar</string>
     <string name="rfid_reader_model">Modelo do Leitor RFID</string>
-    <string name="active_read_battery_info">Leitura ativa de informações da bateria</string>
-
+    <string name="active_read_battery_info">Leitura ativa de informações da bateria</string>    <!-- Strings para a tela de coleta -->
+    <string name="coleta_title">Coleta RFID</string>
+    <string name="coleta_processar">Processar</string>
+    <string name="coleta_ler_codigos">Ler Códigos</string>
+    <string name="coleta_voltar">Voltar</string>
+    <string name="coleta_iniciar">Iniciar Coleta RFID</string>
+    <string name="coleta_dialog_title">Informações do Inventário</string>
+    <string name="coleta_inventario_id">ID do inventário</string>
+    <string name="coleta_loja_nome">Nome da loja</string>
+    <string name="coleta_iniciar_btn">Iniciar</string>
+    <string name="coleta_cancelar_btn">Cancelar</string>
+      <!-- Strings para o histórico de coletas -->
+    <string name="historico_coletas_title">Histórico de Coletas</string>
+    <string name="historico_exportar">Exportar</string>
+    <string name="historico_ver_detalhes">Ver Detalhes</string>
+    <string name="historico_ver">Ver Histórico</string>
+    <string name="historico_sem_coletas">Nenhuma coleta encontrada</string>
+    <string name="historico_exportando">Exportando dados...</string>
+    <string name="historico_exportado">Dados exportados com sucesso</string>
+    
+    <!-- Strings para detalhes da coleta -->
+    <string name="detalhes_coleta_title">Detalhes da Coleta</string>
+    <string name="detalhes_lista_codigos">Códigos RFID coletados:</string>
 </resources>

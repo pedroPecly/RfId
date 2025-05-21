@@ -1,8 +1,11 @@
 package com.uro.serialport.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
 import com.uro.utils.DateUtil;
@@ -155,9 +158,7 @@ public class RfidSdkDemoActivity extends BaseActivity {
             } catch (Exception e) {
                 outputColorText(TextColor.RED, "Erro ao obter modelo: " + e.getMessage());
             }
-        });
-
-        // Configurar o botão de liberação
+        });        // Configurar o botão de liberação
         mBinding.btnRelease.setOnClickListener(view -> {
             try {
                 if (mRfidReaderMange != null) {
@@ -171,7 +172,17 @@ public class RfidSdkDemoActivity extends BaseActivity {
                 outputColorText(TextColor.RED, "Erro ao liberar recursos: " + e.getMessage());
             }
         });
-    }    @Override
+          // Configurar o botão de iniciar coleta
+        mBinding.btnIniciarColeta.setOnClickListener(view -> {
+            showColetaDialog();
+        });
+        
+        // Configurar o botão de histórico de coletas
+        mBinding.btnHistoricoColetas.setOnClickListener(view -> {
+            Intent intent = new Intent(this, HistoricoColetasActivity.class);
+            startActivity(intent);
+        });
+    }@Override
     protected void onDestroy() {
         // Liberar recursos do RFID antes de destruir a activity
         releaseRfidResources();
@@ -191,8 +202,7 @@ public class RfidSdkDemoActivity extends BaseActivity {
             outputColorText(TextColor.RED, "Erro ao liberar recursos RFID: " + e.getMessage());
         }
     }
-    
-    @Override
+      @Override
     protected void onPause() {
         super.onPause();
         // Opcional: parar o monitoramento quando a activity não está visível
@@ -203,5 +213,47 @@ public class RfidSdkDemoActivity extends BaseActivity {
         } catch (Exception e) {
             // Apenas log, não interferir na navegação
         }
+    }
+    
+    /**
+     * Exibe diálogo para coletar informações do inventário antes de iniciar a coleta
+     */
+    private void showColetaDialog() {        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_iniciar_coleta, null);
+        builder.setView(dialogView);
+        builder.setTitle(R.string.coleta_dialog_title);
+        
+        final EditText etInventarioId = dialogView.findViewById(R.id.et_inventario_id);
+        final EditText etLojaNome = dialogView.findViewById(R.id.et_loja_nome);
+        
+        builder.setPositiveButton(R.string.coleta_iniciar_btn, (dialog, which) -> {
+            String inventarioId = etInventarioId.getText().toString().trim();
+            String lojaNome = etLojaNome.getText().toString().trim();
+            
+            if (inventarioId.isEmpty()) {
+                showToast(getString(R.string.coleta_inventario_id) + " é obrigatório");
+                return;
+            }
+            
+            if (lojaNome.isEmpty()) {
+                showToast(getString(R.string.coleta_loja_nome) + " é obrigatório");
+                return;
+            }
+            
+            startColetaActivity(inventarioId, lojaNome);
+        });
+        
+        builder.setNegativeButton(R.string.coleta_cancelar_btn, null);
+        
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    
+    /**
+     * Inicia a ColetaActivity com os parâmetros fornecidos
+     */
+    private void startColetaActivity(String inventarioId, String lojaNome) {
+        Intent intent = ColetaActivity.createIntent(this, inventarioId, lojaNome);
+        startActivity(intent);
     }
 }

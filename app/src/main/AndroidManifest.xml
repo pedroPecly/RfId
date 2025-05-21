@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.USB_PERMISSION" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -43,8 +44,7 @@
 
 <!--                <category android:name="android.intent.category.LAUNCHER"/>-->
 <!--            </intent-filter>-->
-        </activity>
-        <activity android:name="com.uro.serialport.view.activity.SerialPortCommunicationActivity"
+        </activity>        <activity android:name="com.uro.serialport.view.activity.SerialPortCommunicationActivity"
             android:screenOrientation="portrait"
             android:label="@string/serial_port"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
@@ -57,6 +57,23 @@
         <activity
             android:name="com.uro.serialport.SerialPortSettingActivity"
             android:screenOrientation="portrait">
+        </activity>        <activity
+            android:name="com.uro.serialport.view.activity.ColetaActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/coleta_title"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+        </activity>
+        <activity
+            android:name="com.uro.serialport.view.activity.HistoricoColetasActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/historico_coletas_title"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+        </activity>
+        <activity
+            android:name="com.uro.serialport.view.activity.DetalhesColetaActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/detalhes_coleta_title"
+            android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>
         <receiver
             android:name="com.uro.receiver.AppReceiver"

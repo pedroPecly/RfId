@@ -57,17 +57,30 @@
             android:background="@drawable/bg_round"
             android:text="@string/rfid_reader_model"
             android:textColor="@color/colorTextPrimary"
-            android:layout_marginTop="10dp" />
-
-        <Button
+            android:layout_marginTop="10dp" />        <Button
             android:id="@+id/btn_release"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/bg_round"
             android:text="@string/release"
             android:textColor="@color/colorTextPrimary"
+            android:layout_marginTop="10dp" />        <Button
+            android:id="@+id/btn_iniciar_coleta"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_round"
+            android:text="@string/coleta_iniciar"
+            android:textColor="@color/colorTextPrimary"
             android:layout_marginTop="10dp" />
-
+            
+        <Button
+            android:id="@+id/btn_historico_coletas"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_round"
+            android:text="@string/historico_ver"
+            android:textColor="@color/colorTextPrimary"
+            android:layout_marginTop="10dp" />
 
         <include layout="@layout/layout_output"/>
 

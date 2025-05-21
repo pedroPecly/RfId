@@ -38,9 +38,16 @@
         <item>/dev/ttyUSB2</item>
         <item>/dev/ttyUSB3</item>
         <item>/dev/ttyUSB4</item>
-        <item>/dev/ttyHSL0</item>
-        <item>/dev/ttyHSL1</item>
+        <item>/dev/ttyHSL0</item>        <item>/dev/ttyHSL1</item>
         <item>/dev/ttyGS0</item>
         <item>Personalizado</item>
+    </string-array>
+    
+    <!-- Locais de coleta para o inventário -->
+    <string-array name="locais_coleta">
+        <item>Loja</item>
+        <item>Estoque</item>
+        <item>Condicional já lançado</item>
+        <item>Venda já lançada</item>
     </string-array>
 </resources>
