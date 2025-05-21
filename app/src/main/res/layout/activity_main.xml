@@ -18,11 +18,10 @@
             android:id="@+id/button_pc"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@drawable/button_blue_selector"
-            android:textColor="#FFFFFF"
+            android:background="@drawable/button_blue_selector"            android:textColor="#FFFFFF"
             android:textSize="18sp"
 
-            android:text="PC导入POS"/>
+            android:text="Importar PC para POS"/>
         <Button
             android:id="@+id/button_pos"
             android:layout_marginTop="40dp"
@@ -31,7 +30,7 @@
             android:background="@drawable/button_blue_selector"
             android:textSize="18sp"
             android:textColor="#FFFFFF"
-            android:text="POS 互 导"/>
+            android:text="Transferência POS"/>
 
     </LinearLayout>
 

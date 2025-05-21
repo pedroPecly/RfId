@@ -31,9 +31,8 @@
         <item>3000000</item>
         <item>3500000</item>
         <item>4000000</item>
-    </string-array>
-    <string-array name="serial_value">
-         <item>自动匹配</item>
+    </string-array>    <string-array name="serial_value">
+         <item>Correspondência automática</item>
         <item>/dev/ttyUSB0</item>
         <item>/dev/ttyUSB1</item>
         <item>/dev/ttyUSB2</item>
@@ -42,6 +41,6 @@
         <item>/dev/ttyHSL0</item>
         <item>/dev/ttyHSL1</item>
         <item>/dev/ttyGS0</item>
-        <item>自定义</item>
+        <item>Personalizado</item>
     </string-array>
 </resources>

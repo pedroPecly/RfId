@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.urovo.serialport.R;
 
@@ -30,11 +32,18 @@ public abstract class BaseActivity extends AppCompatActivity{
     private ScrollView scrollView;
     private TextView tvOutput;
     private Button button_clearPage;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Remove todos os callbacks para evitar memory leaks
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     public void initView(){
@@ -53,47 +62,55 @@ public abstract class BaseActivity extends AppCompatActivity{
 
     protected void outputText(String text) {
         outputColorText(TextColor.BLACK, text);
-    }
-
-    protected void outputNotWrapText(final String appendText) {
+    }    protected void outputNotWrapText(final String appendText) {
+        if (isFinishing() || isDestroyed()) return;
+        
         mHandler.post(new Runnable() {
             @Override
             public void run() {
+                if (isFinishing() || isDestroyed() || tvOutput == null) return;
+                
                 tvOutput.append(getColorText(TextColor.BLACK, appendText));
 
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        if (isFinishing() || isDestroyed() || scrollView == null) return;
                         scrollView.fullScroll(ScrollView.FOCUS_DOWN);
                     }
                 }, 50);
             }
         });
-    }
-
-    protected void outputColorText(final TextColor color, final String text) {
+    }protected void outputColorText(final TextColor color, final String text) {
+        if (isFinishing() || isDestroyed()) return;
+        
         mHandler.post(new Runnable() {
             @Override
             public void run() {
+                if (isFinishing() || isDestroyed()) return;
+                
                 String appendText = "\n" + text;
-                tvOutput.append(getColorText(color, appendText));
+                if (tvOutput != null) {
+                    tvOutput.append(getColorText(color, appendText));
 
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                    }
-                }, 50);
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (isFinishing() || isDestroyed() || scrollView == null) return;
+                            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                        }
+                    }, 50);
+                }
             }
         });
-    }
-
-    protected void clearText() {
+    }    protected void clearText() {
+        if (isFinishing() || isDestroyed()) return;
+        
         mHandler.post(new Runnable() {
             @Override
             public void run() {
+                if (isFinishing() || isDestroyed() || tvOutput == null) return;
                 tvOutput.setText("");
-
             }
         });
     }
@@ -155,14 +172,12 @@ public abstract class BaseActivity extends AppCompatActivity{
                 Toast.makeText(BaseActivity.this, ""+msg, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    protected void showDialogError(String resourceId) {
+    }    protected void showDialogError(String resourceId) {
 
         AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setTitle("错误提示");
+        b.setTitle("Aviso de Erro");
         b.setMessage(resourceId);
-        b.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        b.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
             }

@@ -46,12 +46,14 @@ android {
             versionName "1.0." + versionCode
             resValue "string", "app_name", "Urv SerialPort RFID"
         }
-    }
-
-    applicationVariants.all { variant ->
-        variant.outputs.all {
-            def fileName = "Serialport_${productFlavors[0].name}_v${productFlavors[0].name}_v${productFlavors[0].versionName}_${new Date().format("yyyyMMddHHmmss")}_${buildType.name}.apk"
-            outputFileName = fileName
+    }    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def flavorName = variant.flavorName
+            def buildType = variant.buildType.name
+            def versionName = variant.versionName
+            def date = new Date().format("yyyyMMddHHmmss")
+            
+            output.outputFileName = "Serialport_${flavorName}_v${versionName}_${date}_${buildType}.apk"
         }
     }
 
@@ -73,6 +75,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation files('libs\\platform_sdk_v3.1.0326.jar')
-    implementation 'com.google.code.gson:gson:2.2.4'
+    implementation 'com.google.code.gson:gson:2.10.1'
     implementation files('libs\\Urv_RfidSerialPortSdk_v.2.0.6_release.jar')
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.6.2'
 }

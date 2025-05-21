@@ -12,34 +12,29 @@ import com.uro.utils.SharePreTool;
  * @since 2019/6/3
  */
 public class BaseApplication extends Application {
-    private final  String TAG  = BaseApplication.class.getSimpleName();
+    private final String TAG = BaseApplication.class.getSimpleName();
     private static Context mContext;
     private static BaseApplication mInstance = null;
     private boolean isInited = false;
+    
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
         mContext = getApplicationContext();
-    
-       
         initApplication();
-        
     }
+    
+    /**
+     * onTerminate não é garantido que será chamado no Android
+     * Esta função é apenas para emuladores e não deve ser usada em casos reais
+     */
     @Override
     public void onTerminate() {
-        // 程序终止
+        // Término do programa
         super.onTerminate();
-    }
-    
-    
-    
-    /**
-    
-    
-    }
-    /**
-     * 初始化应用
+    }    /**
+     * Inicializar aplicação
      */
     public void initApplication() {
         if (!isInited) {
@@ -48,14 +43,19 @@ public class BaseApplication extends Application {
         }
     }
     
-    
+    /**
+     * Retorna a instância singleton do BaseApplication
+     * @return instância do BaseApplication
+     */
     public static BaseApplication getInstance() {
         return mInstance;
     }
     
-
+    /**
+     * Retorna o contexto da aplicação
+     * @return contexto da aplicação
+     */
     public static Context getContext() {
         return mContext;
     }
-    
 }

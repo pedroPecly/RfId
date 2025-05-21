@@ -31,22 +31,19 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:orientation="horizontal"
-                >
-
-                <TextView
+                >                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="串口号："
+                    android:text="Porta serial:"
                     android:gravity="center_vertical"
                     />
 
-                <!--android:entries="@array/certificateType"-->
-                <Spinner
+                <!--android:entries="@array/certificateType"-->                <Spinner
                     android:id="@+id/spinner_serial"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="请选择串口号"
+                    android:text="Selecione a porta serial"
                     android:spinnerMode="dropdown"
                     android:entries="@array/serial_value"
                     android:dropDownWidth="match_parent"
@@ -65,14 +62,12 @@
                 android:paddingRight="10dp"
                 android:orientation="horizontal"
                 android:gravity="center"
-                >
-
-                <EditText
+                >                <EditText
                     android:id="@+id/edittext_serial"
                     android:layout_width="0dp"
                     android:layout_weight="3"
                     android:layout_height="match_parent"
-                    android:hint="请输入串口号"
+                    android:hint="Digite a porta serial"
                     android:gravity="center_vertical"
                     />
 
@@ -81,7 +76,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="40dp"
-                    android:text="保存"
+                    android:text="Salvar"
                     />
 
 
@@ -95,22 +90,19 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:orientation="horizontal"
-                >
-
-                <TextView
+                >                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="波特率："
+                    android:text="Taxa de baud:"
                     android:gravity="center_vertical"
                     />
 
-                <!--android:entries="@array/certificateType"-->
-                <Spinner
+                <!--android:entries="@array/certificateType"-->                <Spinner
                     android:id="@+id/spinner_baudrates"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="请选择波特率"
+                    android:text="Selecione a taxa de baud"
                    android:entries="@array/baudrates_value"
                     android:spinnerMode="dropdown"
                     android:dropDownWidth="match_parent"

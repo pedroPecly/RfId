@@ -10,45 +10,58 @@ public class SharePreTool {
 	
 	
 	/**
-	 * 初始化
-	 * @param ctx 上下文
+	 * Inicialização
+	 * @param ctx contexto da aplicação
 	 */
 	public static void init(Context ctx) {
-		context = ctx;
+		if (ctx != null) {
+			context = ctx.getApplicationContext(); // Sempre use o contexto da aplicação
+		}
 	}
 	
-	
-	/**
-	 * 获取配置参数 String
+		/**
+	 * Obtém parâmetro de configuração String
 	 * 
-	 * @return
+	 * @param name nome do parâmetro
+	 * @param defValues valor padrão
+	 * @return valor do parâmetro
 	 */
-	public static String getString( String name,
-                                     String defValues) {
+	public static String getString(String name, String defValues) {
+		if (context == null) return defValues;
+		
 		SharedPreferences preferences = context.getSharedPreferences(name,
 				Context.MODE_PRIVATE);
 		synchronized (preferences) {
-
 			return preferences.getString(name, defValues);
 		}
 	}
 
-	/*
-	 * String 设置配置参数
+	/**
+	 * Define parâmetro de configuração String
+	 * 
+	 * @param name nome do parâmetro
+	 * @param values valor a ser salvo
+	 * @return true se a operação foi bem-sucedida
 	 */
-	public static boolean setString( String name, String values) {
+	public static boolean setString(String name, String values) {
+		if (context == null) return false;
+		
 		SharedPreferences preferences = context.getSharedPreferences(name,
 				Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
 		editor.putString(name, values);
-	return 	editor.commit();
+		return editor.commit();
 	}
-
-	/*
-	 * int,获取配置参数
+	/**
+	 * Obtém parâmetro de configuração int
+	 * 
+	 * @param name nome do parâmetro
+	 * @param defValues valor padrão
+	 * @return valor do parâmetro
 	 */
-	public static int getInt( String name,
-                               int defValues) {
+	public static int getInt(String name, int defValues) {
+		if (context == null) return defValues;
+		
 		SharedPreferences preferences = context.getSharedPreferences(name,
 				Context.MODE_PRIVATE);
 		synchronized (preferences) {
@@ -56,24 +69,34 @@ public class SharePreTool {
 		}
 	}
 
-	/*
-	 * int,设置参数
+	/**
+	 * Define parâmetro de configuração int
+	 * 
+	 * @param name nome do parâmetro
+	 * @param value valor a ser salvo
+	 * @return true se a operação foi bem-sucedida
 	 */
-	public static void setInt( String name, int value) {
+	public static boolean setInt(String name, int value) {
+		if (context == null) return false;
+		
 		SharedPreferences preferences = context.getSharedPreferences(name,
 				Context.MODE_PRIVATE);
 		synchronized (preferences) {
 			Editor editor = preferences.edit();
 			editor.putInt(name, value);
-			editor.commit();
+			return editor.commit();
 		}
 	}
-
-	/*
-	 * boolean类型,获取配置参数
+	/**
+	 * Obtém parâmetro de configuração boolean
+	 * 
+	 * @param name nome do parâmetro
+	 * @param defValues valor padrão
+	 * @return valor do parâmetro
 	 */
-	public static boolean getBoolean( String name,
-                                       boolean defValues) {
+	public static boolean getBoolean(String name, boolean defValues) {
+		if (context == null) return defValues;
+		
 		SharedPreferences preferences = context.getSharedPreferences(name,
 				Context.MODE_PRIVATE);
 		synchronized (preferences) {
@@ -81,17 +104,22 @@ public class SharePreTool {
 		}
 	}
 
-	/*
-	 * boolean类型,设置参数
+	/**
+	 * Define parâmetro de configuração boolean
+	 * 
+	 * @param name nome do parâmetro
+	 * @param value valor a ser salvo
+	 * @return true se a operação foi bem-sucedida
 	 */
-	public static void setBoolean(String name,
-                                    boolean value) {
+	public static boolean setBoolean(String name, boolean value) {
+		if (context == null) return false;
+		
 		SharedPreferences preferences = context.getSharedPreferences(name,
 				Context.MODE_PRIVATE);
 		synchronized (preferences) {
 			Editor editor = preferences.edit();
 			editor.putBoolean(name, value);
-			editor.commit();
+			return editor.commit();
 		}
 	}
 }

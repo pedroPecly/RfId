@@ -16,90 +16,192 @@ import java.util.Date;
 import java.util.Map;
 
 /**
+ * Activity principal para demonstração do SDK RFID
  * @author ZhengJuE
- * @brief description
  * @date 2023-01-11
  */
-public class RfidSdkDemoActivity extends BaseActivity{
+public class RfidSdkDemoActivity extends BaseActivity {
     private ActivityRfidSdkDemoBinding mBinding;
     private RfidReaderMange mRfidReaderMange;
-    private RfidReaderMangeModuleInfoCallBack mangeModuleInfoCallBack = new RfidReaderMangeModuleInfoCallBack() {
+    
+    // Callback para receber informações do módulo RFID
+    private final RfidReaderMangeModuleInfoCallBack mangeModuleInfoCallBack = new RfidReaderMangeModuleInfoCallBack() {
         @Override
         public void onReadBatteryInfo(Map<String, Object> respMap) {
-            int batteryStatus = (int) respMap.get(GlobalConstant.RespDataKey.BatteryStatus);
-            outputColorText(TextColor.GREEN, DateUtil.getDateTime1(new Date())+">>"+GlobalConstant.RespDataKey.BatteryLevel+": "+respMap.get(GlobalConstant.RespDataKey.BatteryLevel)+"%");
-            outputColorText(TextColor.GREEN,DateUtil.getDateTime1(new Date())+">>"+GlobalConstant.RespDataKey.BatteryStatus+": "+batteryStatus+"（"+(batteryStatus==1?"charging":"not charging")+")");
-            mBinding.tvStatus.setText(mRfidReaderMange.getCurrentPathName() + " "+ mRfidReaderMange.getCurrentSpeed());
-        }
-
-        @Override
+            if (isFinishing() || isDestroyed() || respMap == null) return;
+            
+            try {
+                int batteryStatus = (int) respMap.get(GlobalConstant.RespDataKey.BatteryStatus);
+                Object batteryLevel = respMap.get(GlobalConstant.RespDataKey.BatteryLevel);
+                
+                if (batteryLevel != null) {
+                    outputColorText(TextColor.GREEN, DateUtil.getDateTime1(new Date()) + ">>" + 
+                            GlobalConstant.RespDataKey.BatteryLevel + ": " + batteryLevel + "%");
+                }
+                
+                outputColorText(TextColor.GREEN, DateUtil.getDateTime1(new Date()) + ">>" + 
+                        GlobalConstant.RespDataKey.BatteryStatus + ": " + batteryStatus + 
+                        "（" + (batteryStatus == 1 ? "carregando" : "não carregando") + ")");
+                
+                updateStatus();
+            } catch (Exception e) {
+                outputColorText(TextColor.RED, "Erro ao processar informações da bateria: " + e.getMessage());
+            }
+        }        @Override
         public void onModuleStatus(String status) {
-            mBinding.tvModuleStatus.setText("ModuleStatus:"+status);
+            if (isFinishing() || isDestroyed()) return;
+            
+            runOnUiThread(() -> {
+                if (mBinding != null) {
+                    mBinding.tvModuleStatus.setText("Status do Módulo: " + status);
+                }
+            });
         }
 
         @Override
-        public void onFail(String errorCode, String msg){
-            outputColorText(TextColor.RED, DateUtil.getDateTime1(new Date())+">>"+"Active:"+errorCode+":"+msg);
+        public void onFail(String errorCode, String msg) {
+            if (isFinishing() || isDestroyed()) return;
+            
+            outputColorText(TextColor.RED, DateUtil.getDateTime1(new Date()) + ">>" + 
+                    "Erro: " + errorCode + ": " + msg);
         }
     };
-
-    @Override
+    
+    /**
+     * Atualiza as informações de status na interface
+     */
+    private void updateStatus() {
+        if (isFinishing() || isDestroyed() || mBinding == null || mRfidReaderMange == null) return;
+        
+        runOnUiThread(() -> {
+            try {
+                String statusText = mRfidReaderMange.getCurrentPathName() + " " + mRfidReaderMange.getCurrentSpeed();
+                mBinding.tvStatus.setText(statusText);
+            } catch (Exception e) {
+                outputColorText(TextColor.RED, "Erro ao atualizar status: " + e.getMessage());
+            }
+        });
+    }    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_rfid_sdk_demo);
-        mRfidReaderMange = RfidReaderMange.getInstance();
-        int iRet = mRfidReaderMange.initialize(this);
+        
+        initRfidManager();
         initView();
+    }
+    
+    /**
+     * Inicializa o gerenciador RFID
+     */
+    private void initRfidManager() {
+        try {
+            mRfidReaderMange = RfidReaderMange.getInstance();
+            int result = mRfidReaderMange.initialize(this);
+            
+            if (result == GlobalConstant.SerialPortResp.Success) {
+                outputColorText(TextColor.GREEN, "Inicialização do RFID bem-sucedida");
+                updateStatus();
+            } else {
+                outputColorText(TextColor.RED, "Falha na inicialização do RFID: " + 
+                        mRfidReaderMange.getErrorMessage(result));
+            }
+        } catch (Exception e) {
+            outputColorText(TextColor.RED, "Erro na inicialização do RFID: " + e.getMessage());
+        }
     }
 
     @Override
     public void initView() {
         super.initView();
-        mBinding.btnInit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int iRet = mRfidReaderMange.initialize(RfidSdkDemoActivity.this);
-                outputText(getString(R.string.initialize) +":"+iRet+" "+mRfidReaderMange.getErrorMessage(iRet));
-                if (iRet == GlobalConstant.SerialPortResp.Success)
-                    mBinding.tvStatus.setText(mRfidReaderMange.getCurrentPathName() + " "+ mRfidReaderMange.getCurrentSpeed());
-            }
-        });
-        mBinding.btnRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                outputText(""+getString(R.string.active_read_battery_info));
-                try {
-                    mRfidReaderMange.startMonitorModuleInfo(5,mangeModuleInfoCallBack);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    outputColorText(TextColor.RED,getString(R.string.active_read_battery_info)+" Exception:"+e.toString());
+        
+        // Configurar o botão de inicialização
+        mBinding.btnInit.setOnClickListener(view -> {
+            try {
+                int result = mRfidReaderMange.initialize(RfidSdkDemoActivity.this);
+                outputText(getString(R.string.initialize) + ": " + result + " " + 
+                        mRfidReaderMange.getErrorMessage(result));
+                
+                if (result == GlobalConstant.SerialPortResp.Success) {
+                    updateStatus();
                 }
+            } catch (Exception e) {
+                outputColorText(TextColor.RED, "Erro ao inicializar: " + e.getMessage());
+            }
+        });        // Configurar o botão de solicitação de informações
+        mBinding.btnRequest.setOnClickListener(view -> {
+            outputText(getString(R.string.active_read_battery_info));
+            try {
+                if (mRfidReaderMange != null) {
+                    mRfidReaderMange.startMonitorModuleInfo(5, mangeModuleInfoCallBack);
+                } else {
+                    outputColorText(TextColor.RED, "Gerenciador RFID não inicializado");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                outputColorText(TextColor.RED, getString(R.string.active_read_battery_info) + 
+                        " Exceção: " + e.toString());
             }
         });
 
-        mBinding.btnReaderModel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                outputText(getString(R.string.rfid_reader_model)+":"+mRfidReaderMange.getRfidModel());
+        // Configurar o botão de leitura do modelo
+        mBinding.btnReaderModel.setOnClickListener(view -> {
+            try {
+                if (mRfidReaderMange != null) {
+                    String model = mRfidReaderMange.getRfidModel();
+                    outputText(getString(R.string.rfid_reader_model) + ": " + model);
+                } else {
+                    outputColorText(TextColor.RED, "Gerenciador RFID não inicializado");
+                }
+            } catch (Exception e) {
+                outputColorText(TextColor.RED, "Erro ao obter modelo: " + e.getMessage());
             }
         });
 
-        mBinding.btnRelease.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRfidReaderMange.release();
-                outputText("release success");
-                mBinding.tvStatus.setText(getString(R.string.disconnect));
+        // Configurar o botão de liberação
+        mBinding.btnRelease.setOnClickListener(view -> {
+            try {
+                if (mRfidReaderMange != null) {
+                    mRfidReaderMange.release();
+                    outputText("Liberação concluída");
+                    mBinding.tvStatus.setText(getString(R.string.disconnect));
+                } else {
+                    outputColorText(TextColor.RED, "Gerenciador RFID não inicializado");
+                }
+            } catch (Exception e) {
+                outputColorText(TextColor.RED, "Erro ao liberar recursos: " + e.getMessage());
             }
         });
-
-    }
-
-    @Override
+    }    @Override
     protected void onDestroy() {
-        if (mRfidReaderMange != null){
-            mRfidReaderMange.release();
-        }
+        // Liberar recursos do RFID antes de destruir a activity
+        releaseRfidResources();
         super.onDestroy();
+    }
+    
+    /**
+     * Libera recursos do RFID de forma segura
+     */
+    private void releaseRfidResources() {
+        try {
+            if (mRfidReaderMange != null) {
+                mRfidReaderMange.release();
+                outputText("Recursos RFID liberados com sucesso");
+            }
+        } catch (Exception e) {
+            outputColorText(TextColor.RED, "Erro ao liberar recursos RFID: " + e.getMessage());
+        }
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Opcional: parar o monitoramento quando a activity não está visível
+        try {
+            if (mRfidReaderMange != null) {
+                // Se houver algum método para parar o monitoramento, chamar aqui
+            }
+        } catch (Exception e) {
+            // Apenas log, não interferir na navegação
+        }
     }
 }

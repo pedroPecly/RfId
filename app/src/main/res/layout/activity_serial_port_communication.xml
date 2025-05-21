@@ -37,10 +37,9 @@
             <Button
                 android:id="@+id/btn_open_host"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="40dp"
+                android:layout_weight="1"                android:layout_height="40dp"
                 android:background="@drawable/bg_round"
-                android:text="打开 Host 模式"
+                android:text="Abrir modo Host"
                 android:layout_marginEnd="5dp"/>
 
             <Button
@@ -49,7 +48,7 @@
                 android:layout_weight="1"
                 android:layout_height="40dp"
                 android:background="@drawable/bg_round"
-                android:text="关闭 Host 模式"
+                android:text="Fechar modo Host"
                 android:layout_marginStart="5dp"/>
 
         </LinearLayout>
@@ -63,10 +62,9 @@
         <Button
             android:id="@+id/btn_open_serial"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="40dp"
+            android:layout_weight="1"            android:layout_height="40dp"
             android:background="@drawable/bg_round"
-            android:text="打开串口"
+            android:text="Abrir porta serial"
             android:layout_marginEnd="5dp"/>
 
         <Button
@@ -75,17 +73,16 @@
             android:layout_weight="1"
             android:layout_height="40dp"
             android:background="@drawable/bg_round"
-            android:text="关闭串口"
+            android:text="Fechar porta serial"
             android:layout_marginStart="5dp"/>
 
     </LinearLayout>
 
         <Button
             android:id="@+id/btn_send"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_width="match_parent"            android:layout_height="40dp"
             android:background="@drawable/bg_round"
-            android:text="发送数据"
+            android:text="Enviar dados"
             android:layout_marginTop="10dp" />
 
         <Button
@@ -93,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/bg_round"
-            android:text="设置串口参数"
+            android:text="Configurar parâmetros da porta serial"
             android:layout_marginTop="10dp"/>
 
         <include layout="@layout/layout_output"/>

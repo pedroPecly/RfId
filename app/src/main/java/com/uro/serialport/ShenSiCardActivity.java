@@ -19,22 +19,18 @@ import com.urovo.serialport.R;
 import java.io.UnsupportedEncodingException;
 
 
-public class ShenSiCardActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private TextView mTvSend;//发送的数据
-    private TextView mTvReceive;//接收的实际是数据
-    private TextView mTvResult;//处理后的数据
-    private EditText mEdSend;//输入框
+public class ShenSiCardActivity extends AppCompatActivity implements View.OnClickListener {    private TextView mTvSend;//dados enviados
+    private TextView mTvReceive;//dados realmente recebidos
+    private TextView mTvResult;//dados processados
+    private EditText mEdSend;//campo de entrada
     private Button mBtnSend;
     private SerialPortTool mSerialPortTool;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import);
-        setTitle(getResources().getString(R.string.app_name) + " v" + getAppInfo() + "       神思版读卡");
+        setTitle(getResources().getString(R.string.app_name) + " v" + getAppInfo() + "       Leitura de cartão Shensi");
 
         mTvSend = findViewById(R.id.tv_send);
         mTvReceive = findViewById(R.id.tv_receive);
@@ -61,11 +57,9 @@ public class ShenSiCardActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    private void sendData() {
-
-        try {
+    private void sendData() {        try {
             String sendStr = getSendTextView();
-            mTvSend.setText("发送数据：" + sendStr);
+            mTvSend.setText("Dados enviados: " + sendStr);
             byte[] sendData = sendStr.getBytes("UTF-8");
             String result = mSerialPortTool.sendData(sendData, sendData.length);
             if (result != null) {
@@ -92,10 +86,8 @@ public class ShenSiCardActivity extends AppCompatActivity implements View.OnClic
 //            } catch (UnsupportedEncodingException e) {
 //                e.printStackTrace();
 //                mTvReceive.setText("转码接收数据出错：" +e.getMessage());
-//            }
-
-            receiveSBuffer.append(result + "  ");
-            mTvReceive.setText("实际接收：\n" + receiveSBuffer.toString());
+//            }            receiveSBuffer.append(result + "  ");
+            mTvReceive.setText("Recebido: \n" + receiveSBuffer.toString());
 
             resultsBuffer.append(result);
             if (resultsBuffer.toString().indexOf(".") > 0) {
@@ -111,10 +103,8 @@ public class ShenSiCardActivity extends AppCompatActivity implements View.OnClic
 
         }
     };
-
-
     /**
-     * 清空 StringBuffer 数据
+     * Limpar dados do StringBuffer
      */
     private void clearData() {
 
@@ -148,14 +138,12 @@ public class ShenSiCardActivity extends AppCompatActivity implements View.OnClic
         super.onDestroy();
         mSerialPortTool.close();
     }
-
-
     private void DisplayError(String resourceId) {
 
         AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setTitle("错误提示");
+        b.setTitle("Aviso de Erro");
         b.setMessage(resourceId);
-        b.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        b.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
 
@@ -172,10 +160,8 @@ public class ShenSiCardActivity extends AppCompatActivity implements View.OnClic
             sendData();
         }
     }
-
-
     /**
-     * 获取版本信息
+     * Obter informações da versão
      *
      * @return
      */

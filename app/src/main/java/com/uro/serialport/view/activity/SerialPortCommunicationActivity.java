@@ -66,12 +66,11 @@ public class SerialPortCommunicationActivity extends BaseActivity{
                 Log.e(TAG,"receive start: " + ByteUtil.bytes2HexString(data));
                 System.arraycopy(data, 0, totalResponseDataBuff, currentResponseLen, data.length);
                 currentResponseLen += data.length;
-                Log.e(TAG,"currentResponseLen:"+currentResponseLen);
-                //没有获取到长度位
+                Log.e(TAG,"currentResponseLen:"+currentResponseLen);                //Sem obter posição de comprimento
                 if (currentResponseLen < 8) {
                     return;
                 }
-                //读取长度位
+                //Ler posição de comprimento
                 byte[] dataLenBuff = new byte[2];
                 if (currentResponseLen >= 8) {
                     System.arraycopy(totalResponseDataBuff, 6, dataLenBuff, 0, 2);
@@ -93,26 +92,21 @@ public class SerialPortCommunicationActivity extends BaseActivity{
                 Log.e(TAG , "STXBuff: " + ByteUtil.bytes2HexString(STXBuff));
                 byte[] CRCBuff = new byte[2];
                 System.arraycopy(totalResponseDataBuff, 4, CRCBuff, 0, 2);
-                Log.e(TAG , "CRCBuff: " + ByteUtil.bytes2HexString(CRCBuff));
-
-                //CRC校验
+                Log.e(TAG , "CRCBuff: " + ByteUtil.bytes2HexString(CRCBuff));                //Verificação CRC
                 byte[] CRCResouceBuff = new byte[dataLenBuff.length + responseDataBuff.length];
                 System.arraycopy(dataLenBuff, 0, CRCResouceBuff, 0, dataLenBuff.length);
                 System.arraycopy(responseDataBuff, 0, CRCResouceBuff, dataLenBuff.length, responseDataBuff.length);
                 Log.e(TAG,"CRCResouceBuff:"+ByteUtil.bytes2HexString(CRCResouceBuff));
                 byte[] CRCBuff2 = ByteUtil.hexString2Bytes(ByteUtil.CrcCall(CRCResouceBuff));
-                if (ByteUtil.comparabytes(CRCBuff, CRCBuff2, CRCBuff.length) != 0) {
-                    Arrays.fill(totalResponseDataBuff, (byte) 0x00);
+                if (ByteUtil.comparabytes(CRCBuff, CRCBuff2, CRCBuff.length) != 0) {                    Arrays.fill(totalResponseDataBuff, (byte) 0x00);
                     currentResponseLen = 0;
                     responseDataBuff = new byte[0];
-                    Log.e(TAG,"CRC校验失败");
+                    Log.e(TAG,"Falha na verificação CRC");
                     //sendHandlerMessage(MESSAGE_FAILED, "CRC校验失败", 0);
                     return;
-                }
-
-                byte[] moduleCodeBuff = new byte[1]; //模块码
-                byte[] functionCodeBuff = new byte[1]; //功能码
-                byte[] commandStatusBuff = new byte[2]; //状态码
+                }                byte[] moduleCodeBuff = new byte[1]; //código do módulo
+                byte[] functionCodeBuff = new byte[1]; //código de função
+                byte[] commandStatusBuff = new byte[2]; //código de status
                 byte[] dataBuff = new byte[responseDataLen - 4];
                 System.arraycopy(responseDataBuff, 0, moduleCodeBuff, 0, 1);
                 System.arraycopy(responseDataBuff, 1, functionCodeBuff, 0, 1);
@@ -124,18 +118,14 @@ public class SerialPortCommunicationActivity extends BaseActivity{
                 responseDataBuff = new byte[0];
 
                 if (!(commandStatusBuff[0] == 0x00
-                        && commandStatusBuff[1] == 0x00)) {
-                    outputColorText(TextColor.RED,"数据响应失败");
+                        && commandStatusBuff[1] == 0x00)) {                    outputColorText(TextColor.RED,"Falha na resposta dos dados");
                     //String errMessage = "获取当前SE固件版本信息失败";
                     ///sendHandlerMessage(MESSAGE_FAILED, errMessage + "：" + BytesUtil.bytes2HexString(commandStatusBuff), 0);
                     return;
-                }
-
-                //获取当前固件版本
-                if (moduleCodeBuff[0] == (byte) 0x15 && functionCodeBuff[0] == 0x01) {
-                    String respData = ByteUtil.bytes2HexString(dataBuff);
-                    Log.e(TAG,"应答数据:"+respData);
-                    outputText("应答数据:"+respData);
+                }                //Obter a versão atual de firmware
+                if (moduleCodeBuff[0] == (byte) 0x15 && functionCodeBuff[0] == 0x01) {String respData = ByteUtil.bytes2HexString(dataBuff);
+                    Log.e(TAG,"Dados da resposta:"+respData);
+                    outputText("Dados da resposta:"+respData);
                     Log.e(TAG,"validData:"+respData);
                     List<TLV> tlvList = mTLVTools.unpack(respData);
                     if (tlvList != null && tlvList.size() > 0){
@@ -148,30 +138,27 @@ public class SerialPortCommunicationActivity extends BaseActivity{
                             byte[] tlvD0Buffer = ByteUtil.hexString2Bytes(tlvD0);
                             int tlvD0Int = ByteUtil.bigEndianConvertToInt(tlvD0Buffer,tlvD0Buffer.length);
                             Log.e(TAG,"tlvD0Int:"+tlvD0Int);
-                            outputText("tlvD0Int:"+tlvD0Int);
-                            int percent = convertPower(tlvD0Int);
-                            Log.e(TAG,"电量:"+percent);
-                            outputColorText(TextColor.RED,"电量:"+percent);
+                            outputText("tlvD0Int:"+tlvD0Int);                            int percent = convertPower(tlvD0Int);
+                            Log.e(TAG,"Bateria:"+percent);
+                            outputColorText(TextColor.RED,"Bateria:"+percent);
                         }
                         if (!TextUtils.isEmpty(tlvD2)){
                             //int tlvD2Int = Integer.parseInt(tlvD2,16);
                             byte[] tlvD2Buffer = ByteUtil.hexString2Bytes(tlvD2);
                             int tlvD2Int = ByteUtil.bigEndianConvertToInt(tlvD2Buffer,tlvD2Buffer.length);
                             Log.e(TAG,"tlvD2Int:"+tlvD2Int);
-                            outputText("tlvD2Int:"+tlvD2Int);
-                            String isCharging = tlvD2Int == 1? "dcin":"dcout";
+                            outputText("tlvD2Int:"+tlvD2Int);                            String isCharging = tlvD2Int == 1? "carregando":"descarregando";
                             outputColorText(TextColor.RED,isCharging);
                         }
 
                     }else {
-                        outputColorText(TextColor.RED,"数据格式错误："+respData);
+                        outputColorText(TextColor.RED,"Erro de formato de dados:"+respData);
                     }
                     return;
                 }
                 //sendHandlerMessage(MESSAGE_FAILED, "固件版本获取失败，未知功能码：" + BytesUtil.bytes2HexString(functionCodeBuff), 0);
             } catch (Exception e) {
-                e.printStackTrace();
-                outputColorText(TextColor.RED,"数据格式错误："+e.toString());
+                e.printStackTrace();                outputColorText(TextColor.RED,"Erro de formato de dados:"+e.toString());
                 //sendHandlerMessage(MESSAGE_FAILED, "固件版本获取失败：" + e.getMessage(), 0);
             }
         }
@@ -204,10 +191,9 @@ public class SerialPortCommunicationActivity extends BaseActivity{
         });
         mBinding.btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                sendData = mBinding.etInputData.getText().toString();
+            public void onClick(View view) {                sendData = mBinding.etInputData.getText().toString();
                 if (TextUtils.isEmpty(sendData)){
-                    showToast("请输入发送数据");
+                    showToast("Por favor, insira os dados para enviar");
                     return;
                 }
                 sendDataBySerialPort(sendData);
@@ -239,9 +225,8 @@ public class SerialPortCommunicationActivity extends BaseActivity{
             @Override
             public void onClick(View view) {
                 if (mSerialPortTool != null){
-                    mSerialPortTool.close();
-                }
-                mBinding.tvStatus.setText("串口关闭");
+                    mSerialPortTool.close();                }
+                mBinding.tvStatus.setText("Porta serial fechada");
             }
         });
     }
@@ -250,18 +235,16 @@ public class SerialPortCommunicationActivity extends BaseActivity{
         try {
             byte[] sendDataBuffer = ByteUtil.hexString2Bytes(data);
             receiveSBuffer.setLength(0);
-            String result = mSerialPortTool.sendData(sendDataBuffer, sendDataBuffer.length);
-            if (result != null){
+            String result = mSerialPortTool.sendData(sendDataBuffer, sendDataBuffer.length);            if (result != null){
                 isOpenSerialPort = false;
-                outputColorText(TextColor.RED,"发送失败："+result);
+                outputColorText(TextColor.RED,"Falha no envio: "+result);
             }else {
-                outputText(data+"\n发送成功");
+                outputText(data+"\nEnviado com sucesso");
             }
         }catch (Exception e){
-            e.printStackTrace();
-            isOpenSerialPort = false;
+            e.printStackTrace();            isOpenSerialPort = false;
             Log.e(TAG,"sendDataBySerialPort EE:"+e.toString());
-            outputColorText(TextColor.RED,"发送失败："+e.toString());
+            outputColorText(TextColor.RED,"Falha no envio: "+e.toString());
         }
     }
 
@@ -271,11 +254,10 @@ public class SerialPortCommunicationActivity extends BaseActivity{
         if (!TextUtils.isEmpty(receiveData) && receiveData.toUpperCase().startsWith("02699601867B160015010000")){
             String validData = receiveData.substring(receiveData.indexOf("02699601867B160015010000"));
             Log.e(TAG,"validData:"+validData);
-            List<TLV> tlvList = new TLVTools().unpack(validData);
-            if (tlvList != null && tlvList.size() > 0){
+            List<TLV> tlvList = new TLVTools().unpack(validData);            if (tlvList != null && tlvList.size() > 0){
                 outputText("TLV:"+ new Gson().toJson(tlvList));
             }else {
-                outputColorText(TextColor.RED,"数据格式错误："+validData);
+                outputColorText(TextColor.RED,"Erro de formato de dados: "+validData);
             }
 
         }
@@ -288,15 +270,14 @@ public class SerialPortCommunicationActivity extends BaseActivity{
         baudrates = 115200;
         mSerialPortTool = new SerialPortTool("",baudrates);
         String result = mSerialPortTool.open();
-        Log.e(TAG,"Open  SerialPort:"+result);
-        if (result != null){
+        Log.e(TAG,"Open  SerialPort:"+result);        if (result != null){
             isOpenSerialPort = false;
             showDialogError(result);
-            mBinding.tvStatus.setText("串口未打开");
+            mBinding.tvStatus.setText("Porta serial não aberta");
         }else {
             isOpenSerialPort = true;
             mSerialPortTool.setOnListener(mSerialPortListener);
-            mBinding.tvStatus.setText("已打开："+mSerialPortTool.getPathName()+"  "+mSerialPortTool.getCurrentSpeed());
+            mBinding.tvStatus.setText("Aberta: "+mSerialPortTool.getPathName()+"  "+mSerialPortTool.getCurrentSpeed());
         }
     }
 

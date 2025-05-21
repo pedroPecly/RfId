@@ -30,12 +30,11 @@
             style="@style/button_style"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
+            android:layout_marginLeft="5dp"            android:layout_weight="1"
             android:background="@drawable/bg_round"
             android:gravity="center"
             android:onClick="onClick"
-            android:text="Clear Screen" />
+            android:text="Limpar Tela" />
     </LinearLayout>
 
     <ScrollView

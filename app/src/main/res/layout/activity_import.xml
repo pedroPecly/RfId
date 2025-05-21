@@ -11,14 +11,13 @@
         android:layout_height="45dp"
         android:orientation="vertical"
         android:gravity="center_vertical"
-        >
-        <Button
+        >        <Button
             android:id="@+id/btn_setting_sp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/button_blue_selector"
             android:textColor="#fff"
-            android:text="设置串口参数"
+            android:text="Configurar parâmetros da porta serial"
             />
     </LinearLayout>
 <LinearLayout
@@ -67,15 +66,14 @@
             android:layout_height="45dp"
             android:textColor="#7E7E7E"
             android:digits="0123456789abcdefABCDEFxX"
-            android:gravity="center_vertical"/>
-        <Button
+            android:gravity="center_vertical"/>        <Button
             android:id="@+id/button"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="45dp"
             android:background="@drawable/button_blue_selector"
             android:textColor="#FFFFFF"
-            android:text="发送"/>
+            android:text="Enviar"/>
 
     </LinearLayout>
 

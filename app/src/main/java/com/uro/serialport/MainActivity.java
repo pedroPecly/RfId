@@ -27,13 +27,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    private void DisplayError(String resourceId) {
+    }    private void DisplayError(String resourceId) {
         AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setTitle("错误提示");
+        b.setTitle("Aviso de Erro");
         b.setMessage(resourceId);
-        b.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        b.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 MainActivity.this.finish();
             }

@@ -19,22 +19,20 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import java.io.UnsupportedEncodingException;
 
-public class DowloadPCActivity extends AppCompatActivity implements View.OnClickListener {
-    
-    private TextView mTvSend;//发送的数据
-    private TextView mTvReceive;//接收的实际是数据
-    private TextView mTvResult;//处理后的数据
-    private EditText mEdSend;//输入框
+public class DowloadPCActivity extends AppCompatActivity implements View.OnClickListener {    
+    private TextView mTvSend;//dados enviados
+    private TextView mTvReceive;//dados realmente recebidos
+    private TextView mTvResult;//dados processados
+    private EditText mEdSend;//campo de entrada
     private Button mBtnSend,settingSerPort;
     private SerialPortTool mSerialPortTool;
     
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        
-        super.onCreate(savedInstanceState);
+          super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import);
-        setTitle(getResources().getString(R.string.app_name)+" v"+getAppInfo()+"       PC导入");
+        setTitle(getResources().getString(R.string.app_name)+" v"+getAppInfo()+"       Importação do PC");
     
         mTvSend = findViewById(R.id.tv_send);
         mTvReceive = findViewById(R.id.tv_receive);
@@ -64,12 +62,11 @@ public class DowloadPCActivity extends AppCompatActivity implements View.OnClick
         return   str ;
     }
     
-    
-    private void sendData() {
+      private void sendData() {
     
         try {
             String sendStr = getSendTextView();
-            mTvSend.setText("发送数据：" + sendStr);
+            mTvSend.setText("Dados enviados: " + sendStr);
 //            byte[] sendData = sendStr.getBytes("UTF-8");
             byte[] sendData = ByteUtil.hexString2Bytes(sendStr);
             String result = mSerialPortTool.sendData(sendData, sendData.length);
@@ -96,14 +93,13 @@ public class DowloadPCActivity extends AppCompatActivity implements View.OnClick
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            
-            receiveSBuffer.append(result + "  ");
-            mTvReceive.setText("实际接收：\n" + receiveSBuffer.toString());
+              receiveSBuffer.append(result + "  ");
+            mTvReceive.setText("Recebido: \n" + receiveSBuffer.toString());
     
             resultsBuffer.append(result);
             if (resultsBuffer.toString().indexOf(".") > 0) {
                 String sub = resultsBuffer.substring(resultsBuffer.indexOf(",") + 1, resultsBuffer.indexOf("."));
-                mTvResult.setText("接收的有效数据：\n" + sub);
+                mTvResult.setText("Dados válidos recebidos: \n" + sub);
                 clearData();
             }
             
@@ -115,9 +111,8 @@ public class DowloadPCActivity extends AppCompatActivity implements View.OnClick
         }
     };
     
-    
-    /**
-     * 清空 StringBuffer 数据
+      /**
+     * Limpar dados do StringBuffer
      */
     private void clearData() {
 
@@ -152,13 +147,12 @@ public class DowloadPCActivity extends AppCompatActivity implements View.OnClick
         mSerialPortTool.close();
     }
     
-    
-    private void DisplayError(String resourceId) {
+      private void DisplayError(String resourceId) {
         
         AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setTitle("错误提示");
+        b.setTitle("Aviso de Erro");
         b.setMessage(resourceId);
-        b.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        b.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             
             public void onClick(DialogInterface dialog, int which) {
                 
@@ -181,9 +175,8 @@ public class DowloadPCActivity extends AppCompatActivity implements View.OnClick
         }
     }
     
-    
-    /**
-     * 获取版本信息
+      /**
+     * Obter informações da versão
      * @return
      */
     private String getAppInfo() {

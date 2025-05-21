@@ -54,12 +54,11 @@ public class SerialPortSettingActivity extends AppCompatActivity {
 		btnSave = (Button)findViewById(R.id.btn_save);
 		type = getIntent().getIntExtra("type",0);
 		btnSave.setOnClickListener(new OnClickListener() {
-			
-			@Override
+					@Override
 			public void onClick(View v) {
 				String edStr  = edittextSave.getText().toString().trim();
 				if (TextUtils.isEmpty(edStr)) {
-					showToas("请先输入串口号");
+					showToas("Por favor, insira o número da porta serial");
 					return;
 				}
 				
@@ -116,11 +115,10 @@ public class SerialPortSettingActivity extends AppCompatActivity {
             }
         });
 	}
-	
-	private void updateUseSetting(){
+		private void updateUseSetting(){
 		String serial = ConfigurationUtils.getSerialPort_Value(type);
 		int baudrates = ConfigurationUtils.getBaudrates_Value(type);
-		tvUseSetting.setText("当前使用  串口号："+(TextUtils.isEmpty(serial)?"自动匹配":serial)+"   波特率： "+baudrates);
+		tvUseSetting.setText("Uso atual  Porta serial:"+(TextUtils.isEmpty(serial)?"Correspondência automática":serial)+"   Taxa de baud: "+baudrates);
 		
 	}
 	

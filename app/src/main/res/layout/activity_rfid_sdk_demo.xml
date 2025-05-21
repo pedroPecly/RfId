@@ -31,50 +31,42 @@
                 android:textColor="@android:color/holo_red_dark"
                 android:layout_marginStart="10dp"/>
 
-        </LinearLayout>
-
-        <Button
+        </LinearLayout>        <Button
             android:id="@+id/btn_init"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_round"
             android:text="@string/initialize"
-            android:layout_marginTop="10dp"
-            android:visibility="gone"/>
+            android:textColor="@color/colorTextPrimary"
+            android:layout_marginTop="10dp" />
 
-        <Button
-            android:id="@+id/btn_send"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_round"
-            android:text="@string/read_battery_info"
-            android:layout_marginTop="10dp"
-            android:visibility="gone"/>
         <Button
             android:id="@+id/btn_request"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_round"
             android:text="@string/active_read_battery_info"
+            android:textColor="@color/colorTextPrimary"
             android:layout_marginTop="10dp" />
 
 
         <Button
             android:id="@+id/btn_reader_model"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_round"
             android:text="@string/rfid_reader_model"
+            android:textColor="@color/colorTextPrimary"
             android:layout_marginTop="10dp" />
 
         <Button
             android:id="@+id/btn_release"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_round"
             android:text="@string/release"
-            android:layout_marginTop="10dp"
-            android:visibility="gone"/>
+            android:textColor="@color/colorTextPrimary"
+            android:layout_marginTop="10dp" />
 
 
         <include layout="@layout/layout_output"/>
