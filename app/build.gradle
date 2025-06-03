@@ -46,23 +46,19 @@ android {
             versionName "1.0." + versionCode
             resValue "string", "app_name", "Urv SerialPort RFID"
         }
-    }    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
             def flavorName = variant.flavorName
             def buildType = variant.buildType.name
             def versionName = variant.versionName
             def date = new Date().format("yyyyMMddHHmmss")
-            
-            output.outputFileName = "Serialport_${flavorName}_v${versionName}_${date}_${buildType}.apk"
+            if (output.hasProperty("outputFileName")) {
+                output.outputFileName = "Serialport_${flavorName}_v${versionName}_${date}_${buildType}.apk"
+            }
         }
     }
-
-    buildFeatures {
-        dataBinding = true
-        buildConfig = true
-    }
-
-
 }
 repositories {
     flatDir {
